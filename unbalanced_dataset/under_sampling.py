@@ -47,8 +47,9 @@ class UnderSampler(UnbalancedDataset):
                 num_samples = int(self.ratio * self.ucd[self.minc])
 
             # Pick some elements at random
-            seed(self.rs)
-            indx = randint(low=0, high=self.ucd[key], size=num_samples)
+            numpy.random.seed(self.rs)
+            indx = numpy.random.randint(low=0, high=self.ucd[key],
+                                        size=num_samples)
 
             # Concatenate to the minority class
             underx = concatenate((underx, self.x[self.y == key][indx]), axis=0)
@@ -94,7 +95,7 @@ class TomekLinks(UnbalancedDataset):
         links = self.is_tomek(self.y, nns, self.minc)
 
         # Return data set without majority Tomek links.
-        return self.x[logical_not(links)], self.y[logical_not(links)]
+        return self.x[numpy.logical_not(links)], self.y[numpy.logical_not(links)]
 
 
 class ClusterCentroids(UnbalancedDataset):

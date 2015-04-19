@@ -59,9 +59,9 @@ from __future__ import print_function
 
 __author__ = 'fnogueira'
 
-from random import gauss
-from random import seed as pyseed
-from numpy.random import seed, randint, uniform
+import numpy
+from random import gauss, betavariate
+from numpy.random import randint, uniform
 from numpy import zeros, ones, concatenate, logical_not, asarray
 from numpy import sum as nsum
 
@@ -311,11 +311,11 @@ class UnbalancedDataset(object):
         new = zeros((n_samples, len(x.T)))
 
         # Set seeds
-        seed(random_state)
+        numpy.random.seed(random_state)
         seeds = randint(low=0, high=100*len(nn_num.flatten()), size=n_samples)
 
         # Randomly pick samples to construct neighbours from
-        seed(random_state)
+        numpy.random.seed(random_state)
         samples = randint(low=0, high=len(nn_num.flatten()), size=n_samples)
 
         # Loop over the NN matrix and create new samples
@@ -325,7 +325,7 @@ class UnbalancedDataset(object):
 
             # Take a step of random size (0,1) in the direction of the n nearest
             # neighbours
-            seed(seeds[i])
+            numpy.random.seed(seeds[i])
             step = step_size * uniform()
 
             # Construct synthetic sample

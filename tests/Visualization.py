@@ -46,14 +46,12 @@ s = {
 def vizualization():
 
     from sklearn.datasets import make_classification
-    x, y = make_classification(n_classes=2, class_sep=2, weights=[0.1, 0.9],\
-                               n_informative=3, n_redundant=1, flip_y=0,\
-                               n_features=20, n_clusters_per_class=1,\
+    x, y = make_classification(n_classes=2, class_sep=2, weights=[0.1, 0.9],
+                               n_informative=3, n_redundant=1, flip_y=0,
+                               n_features=20, n_clusters_per_class=1,
                                n_samples=5000, random_state=10)
 
-
-
-    from UnbalancedDataset import OverSampler, SMOTE, bSMOTE1, bSMOTE2, SVM_SMOTE
+    from unbalanced_dataset.over_sampling import OverSampler, SMOTE, bSMOTE1, bSMOTE2, SVM_SMOTE
 
     ratio = 1
     new = ratio * 500
@@ -72,7 +70,7 @@ def vizualization():
     bsmote2 = bSMOTE2(random_state=1)
     bsx2, bsy2 = bsmote2.fit_transform(x, y)
 
-    svmsmote = SVM_SMOTE(random_state=1, svm_args={'class_weight' : 'auto'})
+    svmsmote = SVM_SMOTE(random_state=1, class_weight='auto')
     svmx, svmy = svmsmote.fit_transform(x, y)
 
 
@@ -91,9 +89,9 @@ def vizualization():
 
     # -------------------------------- // -------------------------------- #
     # Visualization
-    import matplotlib
-    matplotlib.rcParams.update(s)
+    #matplotlib.rcParams.update(s)
     import matplotlib.pyplot as plt
+
 
     f, ax = plt.subplots(2, 3, figsize=(16, 9))
     f.suptitle("Over-sampling with SMOTE: comparison", fontsize=16)
@@ -128,6 +126,7 @@ def vizualization():
         ax[1, 2].scatter(x[y==e, 0], x[y==e, 1], color = c, alpha = 0.5)
     ax[1, 2].scatter(svmx[-new:, 0], svmx[-new:, 1], color = 'y', alpha = 0.3)
     ax[1, 2].set_title('SVM-SMOTE', fontsize=12)
+
 
     # Hide ticks
     plt.setp([a.get_xticklabels() for a in ax[0, :]], visible=False)
